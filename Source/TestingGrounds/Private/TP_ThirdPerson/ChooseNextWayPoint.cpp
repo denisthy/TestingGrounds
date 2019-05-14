@@ -8,10 +8,6 @@
 #include "BehaviorTree/BlackboardComponent.h"
 EBTNodeResult::Type UChooseNextWayPoint::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {
-	// Todo protect against empty patrol route
-
-	// Todo protect against no patrol route 
-
 
 	//Get Patrol Route
 	auto ControlledPawn = OwnerComp.GetAIOwner()->GetPawn();
@@ -21,6 +17,7 @@ EBTNodeResult::Type UChooseNextWayPoint::ExecuteTask(UBehaviorTreeComponent & Ow
 	if (PatrolPoints.Num() == 0)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Guard Missing Patrols Points"));
+	
 		return EBTNodeResult::Failed;
 	}
 
