@@ -38,15 +38,18 @@ void AGun::Tick(float DeltaTime)
 }
 void AGun::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
-
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AGun::OnFire);
+	InputComponent->BindAction("Fire", IE_Pressed, this, &AGun::OnFire);
 }
 void AGun::OnFire()
 {
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
 	{
+		if (!FP_MuzzleLocation) {
+			UE_LOG(LogTemp, Warning, TEXT("STOPPED HERE"));
+			return;
+		}
 		const FRotator SpawnRotation = FP_MuzzleLocation->GetComponentRotation();
 		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
 		const FVector SpawnLocation = FP_MuzzleLocation->GetComponentLocation();

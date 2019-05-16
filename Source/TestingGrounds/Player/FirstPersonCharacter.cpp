@@ -43,9 +43,6 @@ AFirstPersonCharacter::AFirstPersonCharacter()
 	Mesh1P->RelativeLocation = FVector(-0.5f, -4.4f, -155.7f);
 
 
-
-	// Uncomment the following line to turn motion controllers on by default:
-	//bUsingMotionControllers = true;
 }
 
 void AFirstPersonCharacter::BeginPlay()
