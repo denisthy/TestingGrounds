@@ -31,7 +31,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	class UAnimInstance* AnimInstance;
+	
 	/** Fires a projectile. */
+	UFUNCTION(BlueprintCallable,Category ="Firing")
 	void OnFire();
 
 private:

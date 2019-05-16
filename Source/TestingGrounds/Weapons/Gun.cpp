@@ -44,7 +44,6 @@ void AGun::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent
 }
 void AGun::OnFire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("SUCCEEDED GUN"));
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
 	{
