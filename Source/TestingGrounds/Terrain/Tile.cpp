@@ -4,6 +4,8 @@
 #include "Tile.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "EngineUtils.h"
+#include "ActorPool.h"
 // Sets default values
 ATile::ATile()
 {
@@ -58,9 +60,18 @@ bool ATile::GenerateRandomLocation(FVector& OutLocation,float Radius)
 void ATile::BeginPlay()
 {
 	Super::BeginPlay();
-	CanSpawnAtLocation(GetActorLocation(), 500);
-	CanSpawnAtLocation(GetActorLocation()+FVector(0,0,600), 200);
-	
+	TActorIterator<AActor> AActorIterator = TActorIterator<AActor>(GetWorld());
+	while (AActorIterator)
+	{
+		AActor* FoundActor = *AActorIterator;
+		++AActorIterator;
+	}
+}
+
+void ATile::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	Pool->Return(NavMeshBoundsVolume);
 }
 
 // Called every frame
@@ -68,6 +79,27 @@ void ATile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ATile::SetPool(UActorPool * InPool)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Working %s"), *InPool->GetName());
+	Pool = InPool;
+	PositionNavMeshBoundsVolume();
+
+
+}
+
+void ATile::PositionNavMeshBoundsVolume()
+{
+
+	NavMeshBoundsVolume = Pool->Checkout();
+	if (NavMeshBoundsVolume == nullptr) 
+	{
+		UE_LOG(LogTemp, Error, TEXT("NullPtr for NavMeshBoundsVolume"));
+		return;
+	}
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
 }
 
 bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
@@ -82,16 +114,6 @@ bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
 		ECollisionChannel::ECC_GameTraceChannel2,
 		FCollisionShape::MakeSphere(Radius)
 	);
-	/*FColor Color = HasHit ? FColor::Red : FColor::Green;
-	DrawDebugSphere(
-		GetWorld(),
-		Location,
-		Radius,
-		32,
-		Color,
-		true,
-		100
-	);*/
 	return !HasHit;
 }
 

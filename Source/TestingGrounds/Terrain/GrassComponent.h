@@ -6,7 +6,7 @@
 #include "GrassComponent.generated.h"
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class S05_TESTINGGROUNDS_API UGrassComponent : public UHierarchicalInstancedStaticMeshComponent
+class TESTINGGROUNDS_API UGrassComponent : public UHierarchicalInstancedStaticMeshComponent
 {
 	GENERATED_BODY()
 
