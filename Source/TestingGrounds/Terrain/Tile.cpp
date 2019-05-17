@@ -6,11 +6,16 @@
 #include "DrawDebugHelpers.h"
 #include "EngineUtils.h"
 #include "ActorPool.h"
+#include "Engine/World.h"
+#include "NavigationSystem.h"
 // Sets default values
 ATile::ATile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	MinExtent = FVector(0, -2000, 0);
+	MaxExtent = FVector(4000, 2000, 0);
+	NavigationBoundsOffset = FVector(2000, 0, 0);
 
 }
 
@@ -41,9 +46,8 @@ void ATile::PlaceActor(TSubclassOf<AActor> &ToSpawn, const FVector &SpawnPoint, 
 
 bool ATile::GenerateRandomLocation(FVector& OutLocation,float Radius)
 {
-	FVector Max(4000, 2000, 0);
-	FVector Min(0, -2000, 0);
-	FBox Bounds(Min, Max);
+	
+	FBox Bounds(MinExtent, MaxExtent);
 	FVector ResultLocation;
 	for (size_t i = 0; i < 20; i++)
 	{
@@ -99,7 +103,8 @@ void ATile::PositionNavMeshBoundsVolume()
 		UE_LOG(LogTemp, Error, TEXT("NullPtr for NavMeshBoundsVolume"));
 		return;
 	}
-	NavMeshBoundsVolume->SetActorLocation(GetActorLocation());
+	NavMeshBoundsVolume->SetActorLocation(GetActorLocation() + NavigationBoundsOffset);
+	FNavigationSystem::Build(*GetWorld());
 }
 
 bool ATile::CanSpawnAtLocation(FVector Location, float Radius)
