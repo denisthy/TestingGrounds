@@ -16,8 +16,7 @@ public:
 	ATile();
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
-		void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn);
-	FVector GenerateRandomLocation();
+		void PlaceActors(TSubclassOf<AActor> ToSpawn, int MinSpawn, int MaxSpawn, float Radius);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -25,5 +24,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+private:
 
+	void PlaceActor(TSubclassOf<AActor> &ToSpawn, const FVector &SpawnPoint);
+	bool GenerateRandomLocation(FVector& OutLocation, float Radius);
+	bool CanSpawnAtLocation(FVector Location, float Radius);
 };
