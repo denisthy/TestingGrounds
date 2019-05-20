@@ -57,13 +57,17 @@ protected:
 private:
 	void PositionNavMeshBoundsVolume();
 
+	
+	template<class T>
+
 	/* Random Functions used in actors & AI spawn */
-	TArray<FSpawnPosition>  GenerateSpawnPositions(int MinSpawn, int MaxSpawn, float MinScale, float MaxScale, float Radius);
+	void RandomlyPlaceActors(TSubclassOf<T> ToSpawn, int MinSpawn, int MaxSpawn, float Radius, float MinScale = 1, float MaxScale = 1);
 	bool GenerateRandomLocation(FVector& OutLocation, float Radius);
 	void PlaceActor(TSubclassOf<AActor> &ToSpawn, FSpawnPosition SpawnPosition);
-	void PlaceAIPawn(TSubclassOf<APawn> ToSpawn, FSpawnPosition SpawnPosition);
+	void PlaceActor(TSubclassOf<APawn> ToSpawn, FSpawnPosition SpawnPosition);
 	bool CanSpawnAtLocation(FVector Location, float Radius);
 
 	UActorPool* Pool;
 	AActor* NavMeshBoundsVolume;
 };
+
